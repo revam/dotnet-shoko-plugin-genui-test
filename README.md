@@ -9,7 +9,8 @@ its description what a tester should see happen, and two executable actions.
 
 1. **Save Only**: no hooks, conditions or server calls until Save. Tabs of
    every element (string, boolean, integer, nullable integer, float, enum,
-   flags enum, password, text area, code editor) with ranges, lengths,
+   flags enum as a checkbox list stored as an array of its names, its combined
+   member never shown, password, text area, code editor) with ranges, lengths,
    patterns, denied values, an environment variable, a restart flag and
    advanced, read-only and hidden members; flat lists, an enum checkbox list,
    complex lists as tabs, a dropdown and inline, dictionaries keyed by strings
@@ -25,7 +26,7 @@ its description what a tester should see happen, and two executable actions.
    save message, redirect, and answer with several messages.
 4. **Server Options**: `[OptionsProvider]` lists computed from the unsaved
    draft, labelled, shared by two members, asynchronous, static, on a list, on
-   list entries, on a dictionary's keys and values (each with its own
+   a flags enum (narrowed to two of its members), on list entries, on a dictionary's keys and values (each with its own
    provider) and on the entries of a dictionary's lists; a plugin type with a
    `TypeConverter`, labelled through it; a plugin type parsable from text; and
    a provider refusing the draft with a field error. A "Keyed by ID" section has

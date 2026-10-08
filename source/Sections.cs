@@ -35,12 +35,13 @@ public enum TestMode
 }
 
 /// <summary>
-///   A flags enum.
+///   A flags enum, a list of its single-bit members. Zero and the combined
+///   member are only accepted on read and never listed.
 /// </summary>
 [Flags]
 public enum TestFlags
 {
-    /// <summary>Nothing.</summary>
+    /// <summary>Nothing, stored as an empty list.</summary>
     None = 0,
 
     /// <summary>The first flag.</summary>
@@ -51,6 +52,9 @@ public enum TestFlags
 
     /// <summary>The third flag.</summary>
     Blue = 4,
+
+    /// <summary>Every flag, which should never appear as a choice.</summary>
+    All = Red | Green | Blue,
 }
 
 /// <summary>
@@ -93,7 +97,11 @@ public class PrimitivesSection
     /// <summary>An enum.</summary>
     public TestMode Mode { get; set; } = TestMode.Balanced;
 
-    /// <summary>A flags enum.</summary>
+    /// <summary>
+    ///   A flags enum: a checkbox list of Red, Green and Blue, never All or
+    ///   None, stored as an array of the checked names.
+    /// </summary>
+    [List(ListType = DisplayListType.EnumCheckbox)]
     public TestFlags Flags { get; set; } = TestFlags.Red;
 
     /// <summary>A password, through the data type.</summary>
@@ -315,6 +323,9 @@ public class OptionsSection
     /// <summary>A mode, from a subset of the enum.</summary>
     public TestMode Mode { get; set; } = TestMode.Slow;
 
+    /// <summary>Flags, from a subset of the flags enum: Red and Blue only.</summary>
+    public TestFlags Flags { get; set; } = TestFlags.Red;
+
     /// <summary>Entries with options of their own.</summary>
     [List(ListType = DisplayListType.ComplexInline)]
     public List<OptionsRow> Rows { get; set; } = [new()];
@@ -356,6 +367,14 @@ public class OptionsSection
     [OptionsProvider(nameof(Tint))]
     public static TestTint[] ListTints()
         => [new(255, 0, 0), new(0, 128, 0), new(0, 0, 255)];
+
+    /// <summary>
+    ///   Narrows the flags to Red and Blue. The combined member listed too is
+    ///   no entry, so it is left out of the options.
+    /// </summary>
+    [OptionsProvider(nameof(Flags))]
+    public static TestFlags[] ListFlags()
+        => [TestFlags.Red, TestFlags.Blue, TestFlags.All];
 
     /// <summary>Lists versions.</summary>
     [OptionsProvider(nameof(Version))]
