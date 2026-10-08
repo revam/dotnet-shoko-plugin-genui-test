@@ -11,7 +11,8 @@ namespace Shoko.Plugin.GenUiTest;
 ///   should follow the unsaved value. Library choices arrive after a short wait,
 ///   with labels, and the same list serves two members. A dictionary's names
 ///   and ports come from providers of their own, the entries of a dictionary's
-///   lists take options, a plugin colour type is labelled by its converter, and
+///   lists take options, a plugin colour type is labelled by its converter, a plugin version type
+///   parsable from text renders as text, and
 ///   the remote library refuses the draft with a field error on the API key
 ///   until one is set.
 /// </summary>

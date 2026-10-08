@@ -327,6 +327,9 @@ public class OptionsSection
     /// <summary>A plugin type converted to and from text, labelled by its converter.</summary>
     public TestTint Tint { get; set; } = new(0, 0, 0);
 
+    /// <summary>A plugin type parsable from text, without a converter.</summary>
+    public TestVersion Version { get; set; } = new(1, 0);
+
     /// <summary>Needed by the library listing below, which refuses the draft without it.</summary>
     public string ApiKey { get; set; } = string.Empty;
 
@@ -352,6 +355,11 @@ public class OptionsSection
     [OptionsProvider(nameof(Tint))]
     public static TestTint[] ListTints()
         => [new(255, 0, 0), new(0, 128, 0), new(0, 0, 255)];
+
+    /// <summary>Lists versions.</summary>
+    [OptionsProvider(nameof(Version))]
+    public static IEnumerable<TestVersion> ListVersions()
+        => [new(1, 0), new(1, 1), new(2, 0)];
 
     /// <summary>Refuses the draft without an API key, as a field error on it.</summary>
     [OptionsProvider(nameof(RemoteLibrary))]

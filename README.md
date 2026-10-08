@@ -27,8 +27,8 @@ its description what a tester should see happen, and two executable actions.
    draft, labelled, shared by two members, asynchronous, static, on a list, on
    list entries, on a dictionary's keys and values (each with its own
    provider) and on the entries of a dictionary's lists; a plugin type with a
-   `TypeConverter`, labelled through it; and a provider refusing the draft with
-   a field error.
+   `TypeConverter`, labelled through it; a plugin type parsable from text; and
+   a provider refusing the draft with a field error.
 5. **Live Edit**: handlers per event (edited, focused and unfocused, clicked
    and view changed, new value for a row being added), narrowed to the members
    they watch, a nested handler running before the outer one, and a member no
