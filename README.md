@@ -28,7 +28,10 @@ its description what a tester should see happen, and two executable actions.
    list entries, on a dictionary's keys and values (each with its own
    provider) and on the entries of a dictionary's lists; a plugin type with a
    `TypeConverter`, labelled through it; a plugin type parsable from text; and
-   a provider refusing the draft with a field error.
+   a provider refusing the draft with a field error. A "Keyed by ID" section has
+   Guid-keyed dictionaries with labelled keys only, labelled values only, both
+   from separate providers, a key provider shared by several dictionaries, and
+   a stored key no provider lists, which should show as its raw Guid.
 5. **Live Edit**: handlers per event (edited, focused and unfocused, clicked
    and view changed, new value for a row being added), narrowed to the members
    they watch, a nested handler running before the outer one, and a member no

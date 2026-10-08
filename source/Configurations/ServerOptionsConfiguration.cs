@@ -24,4 +24,9 @@ public class ServerOptionsConfiguration : INewtonsoftJsonConfiguration
     ///   Options the server lists on request.
     /// </summary>
     public OptionsSection Options { get; set; } = new();
+
+    /// <summary>
+    ///   Dictionaries keyed by Guid, with labelled keys, values or both.
+    /// </summary>
+    public KeyedByIdSection KeyedByID { get; set; } = new();
 }
