@@ -9,11 +9,15 @@ namespace Shoko.Plugin.GenUiTest;
 ///   Level 4, server options: members whose choices the server lists from the
 ///   current draft. Change the base port and reopen the port choices; they
 ///   should follow the unsaved value. Library choices arrive after a short wait,
-///   with labels, and the same list serves two members.
+///   with labels, and the same list serves two members. A dictionary's names
+///   and ports come from providers of their own, the entries of a dictionary's
+///   lists take options, a plugin colour type is labelled by its converter, and
+///   the remote library refuses the draft with a field error on the API key
+///   until one is set.
 /// </summary>
 [Display(Name = "GenUI Test 4: Server Options")]
 [Section(DisplaySectionType.FieldSet)]
-public class ServerOptionsConfiguration : IConfiguration
+public class ServerOptionsConfiguration : INewtonsoftJsonConfiguration
 {
     /// <summary>
     ///   Options the server lists on request.

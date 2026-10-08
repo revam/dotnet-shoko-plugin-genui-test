@@ -129,9 +129,7 @@ public class LiveEditNested
     /// <summary>
     ///   Upper-cases <see cref="Value"/>.
     /// </summary>
-    // Names its member, though it could watch everything: SHOKO0007's check
-    // throws on `Events` without `ReactiveMembers` in the current analyzer.
-    [ConfigurationAction(ConfigurationActionType.LiveEdit, Events = [ReactiveEventType.Edited], ReactiveMembers = [nameof(Value)])]
+    [ConfigurationAction(ConfigurationActionType.LiveEdit, Events = [ReactiveEventType.Edited])]
     public ConfigurationActionResult OnEdited(ConfigurationActionContext<LiveEditConfiguration> context)
     {
         Echo = Value.ToUpperInvariant();
@@ -155,8 +153,7 @@ public class LiveEditRow
     /// <summary>
     ///   Fills in the key and label of a row being added.
     /// </summary>
-    // Names its members for the same analyzer bug as the nested handler.
-    [ConfigurationAction(ConfigurationActionType.LiveEdit, Events = [ReactiveEventType.NewValue], ReactiveMembers = [nameof(ID), nameof(Label)])]
+    [ConfigurationAction(ConfigurationActionType.LiveEdit, Events = [ReactiveEventType.NewValue])]
     public ConfigurationActionResult OnNewValue(ConfigurationActionContext<LiveEditConfiguration> context)
     {
         if (string.IsNullOrEmpty(ID))

@@ -10,6 +10,7 @@ using Shoko.Abstractions.Config.Attributes;
 using Shoko.Abstractions.Config.Enums;
 using Shoko.Abstractions.UI.Attributes;
 using Shoko.Abstractions.UI.Components;
+using Shoko.Abstractions.Exceptions;
 using Shoko.Abstractions.UI.Enums;
 
 namespace Shoko.Plugin.GenUiTest;
@@ -317,10 +318,50 @@ public class OptionsSection
     [List(ListType = DisplayListType.ComplexInline)]
     public List<OptionsRow> Rows { get; set; } = [new()];
 
-    /// <summary>Lists ports counted from the edited base.</summary>
-    [OptionsProvider(nameof(Port))]
+    /// <summary>Ports by name: the names and the ports each come from a provider of their own.</summary>
+    public Dictionary<string, int> PortsByName { get; set; } = new() { ["web"] = 8000 };
+
+    /// <summary>Tags by mode, a dictionary of lists whose entries take options.</summary>
+    public Dictionary<TestMode, List<string>> TagsByMode { get; set; } = [];
+
+    /// <summary>A plugin type converted to and from text, labelled by its converter.</summary>
+    public TestTint Tint { get; set; } = new(0, 0, 0);
+
+    /// <summary>Needed by the library listing below, which refuses the draft without it.</summary>
+    public string ApiKey { get; set; } = string.Empty;
+
+    /// <summary>A remote library, listed only once <see cref="ApiKey"/> is set.</summary>
+    public string RemoteLibrary { get; set; } = string.Empty;
+
+    /// <summary>Lists ports counted from the edited base, for the port and the dictionary's values.</summary>
+    [OptionsProvider(nameof(Port), nameof(PortsByName))]
     public int[] ListPorts()
         => [BasePort, BasePort + 1, BasePort + 2];
+
+    /// <summary>Lists names for the dictionary's keys.</summary>
+    [OptionsProvider(nameof(PortsByName), Target = OptionsTarget.Keys)]
+    public static string[] ListPortNames()
+        => ["web", "api", "metrics"];
+
+    /// <summary>Lists tags for the entries of the dictionary's lists.</summary>
+    [OptionsProvider(nameof(TagsByMode))]
+    public static SelectOption<string>[] ListTags()
+        => [new("new", "New"), new("hot", "Hot"), new("old")];
+
+    /// <summary>Lists tints; their labels come from the converter.</summary>
+    [OptionsProvider(nameof(Tint))]
+    public static TestTint[] ListTints()
+        => [new(255, 0, 0), new(0, 128, 0), new(0, 0, 255)];
+
+    /// <summary>Refuses the draft without an API key, as a field error on it.</summary>
+    [OptionsProvider(nameof(RemoteLibrary))]
+    public string[] ListRemoteLibraries()
+        => string.IsNullOrWhiteSpace(ApiKey)
+            ? throw new GenericValidationException(
+                "No API key.",
+                new Dictionary<string, IReadOnlyList<string>> { [$"{nameof(ServerOptionsConfiguration.Options)}.{nameof(ApiKey)}"] = ["Set an API key to list the remote libraries."] }
+            )
+            : ["Remote Anime", "Remote Movies"];
 
     /// <summary>Lists libraries with labels, after a short wait.</summary>
     [OptionsProvider(nameof(Library), nameof(ExtraLibraries))]
