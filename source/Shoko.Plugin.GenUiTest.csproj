@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <OutputType>Library</OutputType>
+        <LangVersion>latest</LangVersion>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Title>Shoko GenUI Test</Title>
+        <Authors>revam</Authors>
+        <Version>0.1.0</Version>
+        <Nullable>enable</Nullable>
+        <EnableDynamicLoading>true</EnableDynamicLoading>
+        <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    </PropertyGroup>
+
+    <!-- `ExcludeAssets="runtime"` either way: the server supplies the
+         abstractions, and a plugin shipping its own copy is skipped. -->
+    <ItemGroup Condition="'$(ShokoRepositoryPath)' != ''">
+        <ProjectReference Include="$(ShokoRepositoryPath)/Shoko.Abstractions/Shoko.Abstractions.csproj" Private="false" ExcludeAssets="runtime" />
+        <ProjectReference Include="$(ShokoRepositoryPath)/Shoko.BuildTools.Analyzers/Shoko.BuildTools.Analyzers.csproj"
+                          OutputItemType="Analyzer"
+                          ReferenceOutputAssembly="false"
+                          PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(ShokoRepositoryPath)' == ''">
+        <PackageReference Include="Shoko.Abstractions" Version="$(ShokoAbstractionsVersion)" ExcludeAssets="runtime" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Injects the identity metadata the server reads during discovery.
+             With no `manifest.json` here, it is read from `Plugin.cs`. -->
+        <PackageReference Include="Shoko.BuildTools.Targets" Version="0.3.2" PrivateAssets="All" ExcludeAssets="runtime" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+</Project>

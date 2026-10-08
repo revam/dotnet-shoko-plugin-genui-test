@@ -1,0 +1,12 @@
+<Project>
+    <PropertyGroup>
+        <!-- The abstractions this plugin needs are not on a published package
+             yet. Point this at a Shoko checkout, on the branch carrying them,
+             to build against its projects instead of the package below. -->
+        <ShokoRepositoryPath Condition="'$(ShokoRepositoryPath)' == ''"></ShokoRepositoryPath>
+
+        <!-- Used only without a checkout: the first package expected to carry
+             every feature this plugin exercises. -->
+        <ShokoAbstractionsVersion>6.0.0-alpha.101</ShokoAbstractionsVersion>
+    </PropertyGroup>
+</Project>
