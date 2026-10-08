@@ -15,96 +15,6 @@ using Shoko.Abstractions.UI.Enums;
 namespace Shoko.Plugin.GenUiTest;
 
 /// <summary>
-///   One of every form feature, laid out as tabs. Nothing in it does anything.
-/// </summary>
-[Display(Name = "GenUI Test")]
-[Section(DisplaySectionType.Tab, DefaultSectionName = "General", AppendFloatingSectionsAtEnd = true)]
-[FloatingSection("Login", Description = "A gathered section, described by the class.")]
-public class GenUiTestConfiguration : IConfiguration
-{
-    #region General
-
-    /// <summary>
-    ///   A loose member, gathered into the default section.
-    /// </summary>
-    [Badge("Test", Theme = DisplayColorTheme.Primary)]
-    public string Greeting { get; set; } = "Hello";
-
-    /// <summary>
-    ///   Set this to <c>invalid</c> to see the validation hook refuse a save.
-    /// </summary>
-    [Display(Name = "Validated Text")]
-    public string ValidatedText { get; set; } = string.Empty;
-
-    /// <summary>
-    ///   A member of a gathered section.
-    /// </summary>
-    [SectionName("Login")]
-    public string Username { get; set; } = string.Empty;
-
-    /// <summary>
-    ///   A password in a gathered section.
-    /// </summary>
-    [SectionName("Login")]
-    [PasswordPropertyText]
-    public string Password { get; set; } = string.Empty;
-
-    #endregion
-
-    #region Tabs
-
-    /// <summary>
-    ///   Every scalar element.
-    /// </summary>
-    public PrimitivesSection Primitives { get; set; } = new();
-
-    /// <summary>
-    ///   Lists and dictionaries in every layout.
-    /// </summary>
-    public CollectionsSection Collections { get; set; } = new();
-
-    /// <summary>
-    ///   Members shown, hidden or disabled by others.
-    /// </summary>
-    public ConditionsSection Conditions { get; set; } = new();
-
-    /// <summary>
-    ///   Options the server lists on request.
-    /// </summary>
-    public OptionsSection Options { get; set; } = new();
-
-    /// <summary>
-    ///   Selects whose options live in the value.
-    /// </summary>
-    public SelectsSection Selects { get; set; } = new();
-
-    /// <summary>
-    ///   Buttons and a live-edit handler.
-    /// </summary>
-    public ActionsSection Actions { get; set; } = new();
-
-    #endregion
-
-    #region Hooks
-
-    /// <summary>
-    ///   Refuses <see cref="ValidatedText"/> when it reads <c>invalid</c>.
-    /// </summary>
-    [ConfigurationAction(ConfigurationActionType.Validate)]
-    public static ConfigurationActionResult Validate(GenUiTestConfiguration configuration)
-    {
-        var errors = new Dictionary<string, IReadOnlyList<string>>();
-        if (string.Equals(configuration.ValidatedText, "invalid", StringComparison.OrdinalIgnoreCase))
-            errors[nameof(ValidatedText)] = ["The validation hook refuses this value."];
-        if (configuration.Primitives.Count is 13)
-            errors[$"{nameof(Primitives)}.{nameof(PrimitivesSection.Count)}"] = ["13 is refused by the validation hook."];
-        return new() { ValidationErrors = errors };
-    }
-
-    #endregion
-}
-
-/// <summary>
 ///   An enum, with a description on each member.
 /// </summary>
 public enum TestMode
@@ -166,7 +76,7 @@ public class PrimitivesSection
     [EnvironmentVariable("GENUI_TEST_ENABLED")]
     public bool Enabled { get; set; } = true;
 
-    /// <summary>An integer in a range, drawn small. 13 is refused by validation.</summary>
+    /// <summary>An integer in a range, drawn small.</summary>
     [Range(0, 100)]
     [Visibility(Size = DisplayElementSize.Small)]
     public int Count { get; set; } = 4;
@@ -454,7 +364,7 @@ public class SelectsSection
 }
 
 /// <summary>
-///   Buttons in every position, and a live-edit handler.
+///   Buttons in every position and theme.
 /// </summary>
 [Display(Name = "Actions")]
 [Section(DisplaySectionType.FieldSet)]
@@ -463,13 +373,6 @@ public class ActionsSection
 {
     /// <summary>A switch the buttons below look at.</summary>
     public bool Armed { get; set; }
-
-    /// <summary>A text a live edit mirrors into <see cref="Mirror"/>.</summary>
-    public string Source { get; set; } = string.Empty;
-
-    /// <summary>Kept in step with <see cref="Source"/> by the live-edit handler.</summary>
-    [Visibility(DisplayVisibility.ReadOnly)]
-    public string Mirror { get; set; } = string.Empty;
 
     /// <summary>Pinned to the top.</summary>
     [Display(Name = "Say Hello")]
@@ -507,17 +410,9 @@ public class ActionsSection
     /// <summary>Changes the document it was handed.</summary>
     [Display(Name = "Disarm")]
     [CustomAction(Theme = DisplayColorTheme.Important)]
-    public ConfigurationActionResult DisarmAction(ConfigurationActionContext<GenUiTestConfiguration> context)
+    public ConfigurationActionResult DisarmAction(ConfigurationActionContext<CustomActionsConfiguration> context)
     {
         context.Configuration.Actions.Armed = false;
-        return new(context.Configuration);
-    }
-
-    /// <summary>Mirrors <see cref="Source"/> as it is edited.</summary>
-    [ConfigurationAction(ConfigurationActionType.LiveEdit, ReactiveMembers = [nameof(Source)])]
-    public ConfigurationActionResult OnEdit(ConfigurationActionContext<GenUiTestConfiguration> context)
-    {
-        Mirror = new string(Source.Reverse().ToArray());
         return new(context.Configuration);
     }
 }

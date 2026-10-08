@@ -4,31 +4,41 @@ A plugin holding nothing but forms, for trying out how a client renders Shoko's
 generated UI (`UiDefinition`). It is never released: there is no manifest and no
 release workflow. Its code doubles as a set of examples of every form feature.
 
-What it adds:
+What it adds: seven configurations, one per level of reactivity, each saying in
+its description what a tester should see happen, and two executable actions.
 
-- **The `GenUI Test` configuration**, laid out as tabs:
-  - *General*: loose members gathered into the default section, a described
-    floating section (`Login`), a badge and a value the validation hook refuses
-    (`invalid`).
-  - *Primitives*: every scalar element (string, boolean, integer, nullable
-    integer, float, enum, flags enum, password, text area, code editor) with
-    ranges, lengths, patterns, denied values, an environment variable, a
-    restart flag, and advanced, read-only and hidden members.
-  - *Collections*: flat lists, an enum checkbox list, complex lists as tabs, a
-    dropdown and inline, and dictionaries keyed by strings and enums, of
-    complex values and of lists.
-  - *Conditions*: a member shown, hidden, made read-only or disabled by every
-    condition operator, and a section drawn as a checkbox.
-  - *Options*: server-listed options (`[OptionsProvider]`): computed from the
-    unsaved draft, labelled, shared by several members, asynchronous, static,
-    on a list and on list entries.
-  - *Selects*: `SelectComponent<T>` as a flat list, as checkboxes and grouped.
-  - *Actions*: custom actions in every position and theme, conditional ones,
-    one that edits the document, and a live-edit handler.
-- **Two executable actions**: `GenUI Test: Global`, whose parameters cover most
-  of the above and whose validation refuses on request, and
-  `GenUI Test: Series`, whose options are the titles of the series it is run
-  on. Running either only writes to the log.
+1. **Save Only**: no hooks, conditions or server calls until Save. Tabs of
+   every element (string, boolean, integer, nullable integer, float, enum,
+   flags enum, password, text area, code editor) with ranges, lengths,
+   patterns, denied values, an environment variable, a restart flag and
+   advanced, read-only and hidden members; flat lists, an enum checkbox list,
+   complex lists as tabs, a dropdown and inline, dictionaries keyed by strings
+   and enums, of complex values and of lists; selects as a flat list, as
+   checkboxes and grouped; a badge, the default section and a described
+   floating section.
+2. **Conditions**: client-side reactivity only. A member shown, hidden, made
+   read-only or disabled by every condition operator, and a section drawn as a
+   checkbox. Nothing is sent to the server.
+3. **Custom Actions**: buttons in every position and theme, conditional ones,
+   one in a floating section, one enabled only with changes, and actions that
+   edit the draft, return field errors, save and ask for a refresh, ask for the
+   save message, redirect, and answer with several messages.
+4. **Server Options**: `[OptionsProvider]` lists computed from the unsaved
+   draft, labelled, shared by two members, asynchronous, static, on a list and
+   on list entries.
+5. **Live Edit**: handlers per event (edited, focused and unfocused, clicked
+   and view changed, new value for a row being added), narrowed to the members
+   they watch, a nested handler running before the outer one, and a member no
+   handler watches, which sends nothing.
+6. **Lifecycle Hooks**: New, Load, Validate and Save hooks, with the default
+   save button replaced by the section's own.
+7. **Combined**: a live edit sets a value a condition reads, server options
+   follow the edited value, and a button runs the same chain.
+
+The actions are `GenUI Test: Global`, whose parameters cover most element kinds,
+whose validation refuses on request and whose options are shared by two
+parameters, and `GenUI Test: Series`, whose options are the titles of the series
+it runs on. Running either only writes to the log.
 
 ## Building
 
