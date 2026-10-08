@@ -31,7 +31,10 @@ its description what a tester should see happen, and two executable actions.
    a provider refusing the draft with a field error. A "Keyed by ID" section has
    Guid-keyed dictionaries with labelled keys only, labelled values only, both
    from separate providers, a key provider shared by several dictionaries, and
-   a stored key no provider lists, which should show as its raw Guid.
+   a stored key no provider lists, which should show as its raw Guid. Two of
+   them hold modes from providers that hide one mode behind a toggle, one
+   labelling them itself and one relying on the enum's names in the form.
+   Providers return the full current list; clients filter it locally.
 5. **Live Edit**: handlers per event (edited, focused and unfocused, clicked
    and view changed, new value for a row being added), narrowed to the members
    they watch, a nested handler running before the outer one, and a member no

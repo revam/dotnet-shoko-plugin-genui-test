@@ -24,7 +24,8 @@ public enum TestMode
     [Description("Takes its time.")]
     Slow = 0,
 
-    /// <summary>The second mode.</summary>
+    /// <summary>The second mode, renamed for the form.</summary>
+    [Display(Name = "Middle Ground")]
     [Description("Somewhere in between.")]
     Balanced = 1,
 

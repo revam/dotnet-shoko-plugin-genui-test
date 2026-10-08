@@ -43,10 +43,25 @@ public class KeyedByIdSection
     public Dictionary<Guid, int> PriorityByID { get; set; } = new() { [_beta] = 50 };
 
     /// <summary>
-    ///   Keys and values each from a provider of their own, both labelled. The
-    ///   existing entry should read "Gamma" with the mode "Fast lane".
+    ///   Hides the fast mode from both mode providers below while on. Toggle it
+    ///   and reopen a mode picker: "Fast" should come and go.
     /// </summary>
-    public Dictionary<Guid, string> ModeByPlugin { get; set; } = new() { [_gamma] = "fast" };
+    public bool HideFast { get; set; }
+
+    /// <summary>
+    ///   Keys and values each from a provider of their own, both labelled by
+    ///   the providers. The existing entry should read "Gamma" with the mode
+    ///   "Fast lane"; the picker offers "Slow and steady", "Steady" and, unless
+    ///   hidden, "Fast lane".
+    /// </summary>
+    public Dictionary<Guid, TestMode> ModeByPlugin { get; set; } = new() { [_gamma] = TestMode.Fast };
+
+    /// <summary>
+    ///   Values from a provider that gives no labels, so they read as the form
+    ///   names the enum everywhere else: "Slow", "Middle Ground" and, unless
+    ///   hidden, "Fast". The existing entry should show "Middle Ground".
+    /// </summary>
+    public Dictionary<Guid, TestMode> NamedModeByPlugin { get; set; } = new() { [_alpha] = TestMode.Balanced };
 
     /// <summary>
     ///   Shares its key provider with <see cref="NotesByPlugin"/>; the same
@@ -66,7 +81,7 @@ public class KeyedByIdSection
     #region Providers
 
     /// <summary>Lists the fake plugins, for the keys of every plugin-keyed dictionary.</summary>
-    [OptionsProvider(nameof(NotesByPlugin), nameof(EnabledByPlugin), nameof(ModeByPlugin), nameof(WithUnknownKey), Target = OptionsTarget.Keys)]
+    [OptionsProvider(nameof(NotesByPlugin), nameof(EnabledByPlugin), nameof(ModeByPlugin), nameof(NamedModeByPlugin), nameof(WithUnknownKey), Target = OptionsTarget.Keys)]
     public static SelectOption<Guid>[] ListPlugins()
         => [new(_alpha, "Alpha"), new(_beta, "Beta"), new(_gamma, "Gamma")];
 
@@ -75,10 +90,20 @@ public class KeyedByIdSection
     public static SelectOption<int>[] ListPriorities()
         => [new(10, "Low"), new(50, "Normal"), new(90, "High")];
 
-    /// <summary>Lists labelled modes.</summary>
+    /// <summary>Lists modes with labels of its own, without fast while it is hidden.</summary>
     [OptionsProvider(nameof(ModeByPlugin))]
-    public static SelectOption<string>[] ListModes()
-        => [new("slow", "Slow and steady"), new("fast", "Fast lane")];
+    public IEnumerable<SelectOption<TestMode>> ListModes()
+    {
+        yield return new(TestMode.Slow, "Slow and steady");
+        yield return new(TestMode.Balanced, "Steady");
+        if (!HideFast)
+            yield return new(TestMode.Fast, "Fast lane");
+    }
+
+    /// <summary>Lists modes without labels, without fast while it is hidden.</summary>
+    [OptionsProvider(nameof(NamedModeByPlugin))]
+    public TestMode[] ListNamedModes()
+        => HideFast ? [TestMode.Slow, TestMode.Balanced] : [TestMode.Slow, TestMode.Balanced, TestMode.Fast];
 
     #endregion
 }
