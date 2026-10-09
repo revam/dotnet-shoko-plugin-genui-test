@@ -265,7 +265,7 @@ public class ConditionsSection
 ///   A nested section drawn as a checkbox.
 /// </summary>
 [Display(Name = "Experimental")]
-[Section(DisplaySectionType.Checkbox)]
+[Section(DisplaySectionType.Checkbox, ToggleMember = nameof(Enabled))]
 public class CheckboxSection
 {
     /// <summary>Whether the section is on.</summary>
