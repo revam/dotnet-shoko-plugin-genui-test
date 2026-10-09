@@ -43,11 +43,10 @@ public sealed class TestTintConverter : TypeConverter
 
 /// <summary>
 ///   A plugin-defined version, parsable from <c>major.minor</c> and written
-///   as that text, with no type converter.
+///   as that text by the server, with no type or JSON converter.
 /// </summary>
 /// <param name="Major">The major part.</param>
 /// <param name="Minor">The minor part.</param>
-[Newtonsoft.Json.JsonConverter(typeof(TestVersionJsonConverter))]
 public readonly record struct TestVersion(int Major, int Minor) : IParsable<TestVersion>
 {
     /// <inheritdoc />
@@ -69,23 +68,4 @@ public readonly record struct TestVersion(int Major, int Minor) : IParsable<Test
     /// <inheritdoc />
     public override string ToString()
         => $"{Major}.{Minor}";
-}
-
-/// <summary>
-///   Writes a <see cref="TestVersion"/> as its text.
-/// </summary>
-public sealed class TestVersionJsonConverter : Newtonsoft.Json.JsonConverter<TestVersion>
-{
-    /// <inheritdoc />
-    public override void WriteJson(Newtonsoft.Json.JsonWriter writer, TestVersion value, Newtonsoft.Json.JsonSerializer serializer)
-        => writer.WriteValue(value.ToString());
-
-    /// <inheritdoc />
-    public override TestVersion ReadJson(
-        Newtonsoft.Json.JsonReader reader,
-        Type objectType,
-        TestVersion existingValue,
-        bool hasExistingValue,
-        Newtonsoft.Json.JsonSerializer serializer
-    ) => TestVersion.Parse((string)reader.Value!, CultureInfo.InvariantCulture);
 }
