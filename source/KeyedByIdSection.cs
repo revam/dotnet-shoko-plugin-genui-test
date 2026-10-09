@@ -50,9 +50,11 @@ public class KeyedByIdSection
 
     /// <summary>
     ///   Keys and values each from a provider of their own, both labelled by
-    ///   the providers. The existing entry should read "Gamma" with the mode
-    ///   "Fast lane"; the picker offers "Slow and steady", "Steady" and, unless
-    ///   hidden, "Fast lane".
+    ///   the providers, the values narrowed per key. The existing entry should
+    ///   read "Gamma" with the mode "Fast lane". To add an entry, pick the
+    ///   plugin first, then its mode: "Beta" only offers "Slow and steady" and
+    ///   "Steady", while "Alpha" and "Gamma" also offer "Fast lane" unless
+    ///   hidden.
     /// </summary>
     public Dictionary<Guid, TestMode> ModeByPlugin { get; set; } = new() { [_gamma] = TestMode.Fast };
 
@@ -90,13 +92,18 @@ public class KeyedByIdSection
     public static SelectOption<int>[] ListPriorities()
         => [new(10, "Low"), new(50, "Normal"), new(90, "High")];
 
-    /// <summary>Lists modes with labels of its own, without fast while it is hidden.</summary>
+    /// <summary>
+    ///   Lists modes with labels of its own for the plugin asked for: never
+    ///   fast for Beta, nor for any plugin while fast is hidden.
+    /// </summary>
+    /// <param name="plugin">The plugin whose mode is being picked.</param>
+    /// <returns>The modes the plugin may take.</returns>
     [OptionsProvider(nameof(ModeByPlugin))]
-    public IEnumerable<SelectOption<TestMode>> ListModes()
+    public IEnumerable<SelectOption<TestMode>> ListModes([OptionsKey] Guid plugin)
     {
         yield return new(TestMode.Slow, "Slow and steady");
         yield return new(TestMode.Balanced, "Steady");
-        if (!HideFast)
+        if (!HideFast && plugin != _beta)
             yield return new(TestMode.Fast, "Fast lane");
     }
 

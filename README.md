@@ -34,7 +34,9 @@ its description what a tester should see happen, and two executable actions.
    from separate providers, a key provider shared by several dictionaries, and
    a stored key no provider lists, which should show as its raw Guid. Two of
    them hold modes from providers that hide one mode behind a toggle, one
-   labelling them itself and one relying on the enum's names in the form.
+   labelling them itself and one relying on the enum's names in the form. The
+   first narrows its modes per key through `[OptionsKey]`, so a new entry
+   picks its plugin before its mode.
    Providers return the full current list; clients filter it locally.
 5. **Live Edit**: handlers per event (edited, focused and unfocused, clicked
    and view changed, new value for a row being added), narrowed to the members
