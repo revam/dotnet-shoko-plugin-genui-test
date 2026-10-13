@@ -7,6 +7,6 @@
 
         <!-- Used only without a checkout: the first package expected to carry
              every feature this plugin exercises. -->
-        <ShokoAbstractionsVersion>6.0.0-alpha.101</ShokoAbstractionsVersion>
+        <ShokoAbstractionsVersion>6.0.0-alpha.104</ShokoAbstractionsVersion>
     </PropertyGroup>
 </Project>
