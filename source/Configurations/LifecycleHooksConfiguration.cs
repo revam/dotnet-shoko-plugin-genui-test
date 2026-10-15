@@ -19,7 +19,7 @@ namespace Shoko.Plugin.GenUiTest;
 [Display(Name = "GenUI Test 6: Lifecycle Hooks")]
 [Section(DisplaySectionType.FieldSet, ShowSaveAction = true)]
 [HideDefaultSaveAction]
-public class LifecycleHooksConfiguration : IConfiguration
+public class LifecycleHooksConfiguration : IVisibleConfiguration
 {
     #region Members
 

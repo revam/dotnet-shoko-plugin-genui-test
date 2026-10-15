@@ -19,7 +19,7 @@ namespace Shoko.Plugin.GenUiTest;
 /// </summary>
 [Display(Name = "GenUI Test 4: Server Options")]
 [Section(DisplaySectionType.FieldSet)]
-public class ServerOptionsConfiguration : INewtonsoftJsonConfiguration
+public class ServerOptionsConfiguration : INewtonsoftJsonConfiguration, IVisibleConfiguration
 {
     /// <summary>
     ///   Options the server lists on request.

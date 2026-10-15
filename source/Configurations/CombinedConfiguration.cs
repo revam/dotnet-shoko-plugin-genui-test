@@ -17,7 +17,7 @@ namespace Shoko.Plugin.GenUiTest;
 /// </summary>
 [Display(Name = "GenUI Test 7: Combined")]
 [Section(DisplaySectionType.FieldSet)]
-public class CombinedConfiguration : IConfiguration
+public class CombinedConfiguration : IVisibleConfiguration
 {
     #region Members
 

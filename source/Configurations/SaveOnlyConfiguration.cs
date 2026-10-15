@@ -14,7 +14,7 @@ namespace Shoko.Plugin.GenUiTest;
 [Display(Name = "GenUI Test 1: Save Only")]
 [Section(DisplaySectionType.Tab, DefaultSectionName = "General", AppendFloatingSectionsAtEnd = true)]
 [FloatingSection("Login", Description = "A gathered section, described by the class.")]
-public class SaveOnlyConfiguration : IConfiguration
+public class SaveOnlyConfiguration : IVisibleConfiguration
 {
     #region General
 

@@ -19,7 +19,7 @@ namespace Shoko.Plugin.GenUiTest;
 /// </summary>
 [Display(Name = "GenUI Test 5: Live Edit")]
 [Section(DisplaySectionType.FieldSet)]
-public class LiveEditConfiguration : IConfiguration
+public class LiveEditConfiguration : IVisibleConfiguration
 {
     #region Members
 

@@ -16,7 +16,7 @@ namespace Shoko.Plugin.GenUiTest;
 /// </summary>
 [Display(Name = "GenUI Test 3: Custom Actions")]
 [Section(DisplaySectionType.FieldSet)]
-public class CustomActionsConfiguration : IConfiguration
+public class CustomActionsConfiguration : IVisibleConfiguration
 {
     /// <summary>
     ///   Buttons in every position and theme.

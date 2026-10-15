@@ -12,7 +12,7 @@ namespace Shoko.Plugin.GenUiTest;
 /// </summary>
 [Display(Name = "GenUI Test 2: Conditions")]
 [Section(DisplaySectionType.FieldSet)]
-public class ConditionsConfiguration : IConfiguration
+public class ConditionsConfiguration : IVisibleConfiguration
 {
     /// <summary>
     ///   Members shown, hidden or disabled by others, one per operator.
